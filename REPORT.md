@@ -81,7 +81,14 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_WITH
 ```
 
 **Test Result:**
-![Scenario 1 Result](https://dummyimage.com/800x150/2d2d2d/ffffff&text=Failed+to+call+provider.+HTTP+Error:+403+-+Forbidden%0AThis+is+expected+because+no+JWT+token+was+provided.)
+```bash
+$ export CALLER_WITHOUT_JWT_URL=$(gcloud run services describe caller-without-jwt --project $PROJECT_ID --region us-central1 --format="value(status.url)")
+
+$ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_WITHOUT_JWT_URL
+
+Failed to call provider. HTTP Error: 403 - Forbidden
+This is expected because no JWT token was provided.
+```
 
 ---
 
@@ -119,7 +126,13 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_JWT_
 ```
 
 **Test Result:**
-![Scenario 2 Result](https://dummyimage.com/800x150/2d2d2d/ffffff&text=Success!+Provider+says:+Hello+from+Provider!+This+message+requires+a+valid+JWT+token.)
+```bash
+$ export CALLER_JWT_URL=$(gcloud run services describe caller-with-jwt --project $PROJECT_ID --region us-central1 --format="value(status.url)")
+
+$ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_JWT_URL
+
+Success! Provider says: Hello from Provider! This message requires a valid JWT token.
+```
 
 ---
 
@@ -141,7 +154,12 @@ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_CSM_
 ```
 
 **Test Result:**
-![Scenario 3 Result](https://dummyimage.com/800x150/2d2d2d/ffffff&text=Success!+Provider+says:+Hello+from+Provider!+This+message+requires+a+valid+JWT+token.)
+```bash
+$ export CALLER_CSM_URL=$(gcloud run services describe caller-with-csm --project $PROJECT_ID --region us-central1 --format="value(status.url)")
+$ curl -s -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_CSM_URL
+
+Success! Provider says: Hello from Provider! This message requires a valid JWT token.
+```
 
 ## Conclusion
 
