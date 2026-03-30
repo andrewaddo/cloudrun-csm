@@ -178,3 +178,27 @@ Your request successfully authenticates to `caller-with-csm`. Even though the ap
 ```text
 Success! Provider says: Hello from Provider! This message requires a valid JWT token.
 ```
+
+#### Validating the Mesh Resources
+
+The Cloud Service Mesh resources created in this scenario (specifically the `networkservices.googleapis.com/Mesh` and `HttpRoute` APIs) are **API-first** and do not currently have a dedicated visual configuration UI in the Google Cloud Console.
+
+To inspect your mesh and its routing rules, use the following `gcloud` commands:
+
+1.  **View the Mesh:**
+    ```bash
+    gcloud network-services meshes describe csm-mesh --location=global --project=$PROJECT_ID
+    ```
+
+2.  **View the HTTP Route:**
+    *(This route defines that traffic for `provider.mesh.local` is sent to the backend service)*
+    ```bash
+    gcloud network-services http-routes describe provider-route --location=global --project=$PROJECT_ID
+    ```
+
+3.  **View the Backend Service:**
+    Unlike the Mesh and Route, the underlying backend service *is* visible in the Google Cloud Console.
+    You can view `provider-backend` by navigating to: **Navigation Menu > Network Services > Load balancing > Backends**. Or, via CLI:
+    ```bash
+    gcloud compute backend-services describe provider-backend --global --project=$PROJECT_ID
+    ```
