@@ -24,6 +24,8 @@ We applied two strict Google Cloud Organization Policies at the project level to
 *   `run.managed.requireInvokerIam`: Enforces that all Cloud Run services strictly require IAM authentication. No service can be public.
 *   `iam.allowedPolicyMemberDomains`: Restricts IAM role bindings to only trusted organizational identities, preventing external access.
 
+![Org Policies](img/org-policies-by-project.png)
+
 ### 2. Implementing Cloud Service Mesh (CSM)
 To solve the developer burden of managing JWTs, we implemented a **client-side proxy (egress) mesh pattern** using Cloud Service Mesh. 
 
@@ -90,6 +92,8 @@ Failed to call provider. HTTP Error: 403 - Forbidden
 This is expected because no JWT token was provided.
 ```
 
+![Caller without JWT](img/caller-without-jwt.png)
+
 ---
 
 ### Scenario 2: Manual JWT Management (The "Hard Way")
@@ -134,6 +138,8 @@ $ curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER_JW
 Success! Provider says: Hello from Provider! This message requires a valid JWT token.
 ```
 
+![Caller with JWT](img/caller-with-jwt.png)
+
 ---
 
 ### Scenario 3: Cloud Service Mesh Auto-Injection (The "Smart Way")
@@ -160,6 +166,8 @@ $ curl -s -H "Authorization: Bearer $(gcloud auth print-identity-token)" $CALLER
 
 Success! Provider says: Hello from Provider! This message requires a valid JWT token.
 ```
+
+![Caller with CSM](img/caller-with-csm.png)
 
 ## Conclusion
 
